@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PRODUCT_DATA\PRODUCT_DATA.csproj" />
     <ProjectReference Include="..\PRODUCT_DOMAIN\PRODUCT_DOMAIN.csproj" />
   </ItemGroup>
 

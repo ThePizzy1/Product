@@ -1,18 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PRODUCT_DATA.DataModel;
 
 namespace PRODUCT_DATA
-{/*
-    class ProductDbContext : IDesignTimeDbContextFactory<ProductDbContext>
+{
+    public class ProductDbContextFactory : IDesignTimeDbContextFactory<ProductDbContext>
     {
         public ProductDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ProductDbContext>();
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=Product;User Id=DESKTOP-6DPV5BR\\Korisnik;Integrated Security=True;");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=Product;Trusted_Connection=True;");
+
             return new ProductDbContext(optionsBuilder.Options);
         }
-    }*/
+    }
 }

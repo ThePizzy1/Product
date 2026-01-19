@@ -8,7 +8,7 @@ using System;
 
 namespace PRODUCT_DATA.DataModel
 {
-    
+
     public class ProductDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public ProductDbContext(DbContextOptions<ProductDbContext> options)
@@ -16,15 +16,17 @@ namespace PRODUCT_DATA.DataModel
         {
         }
 
-       
+
         public virtual DbSet<ApplicationUser> User { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
-        public virtual  DbSet<CartItem> CartItems { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Identity tablice
             modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
             modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles");
@@ -33,24 +35,34 @@ namespace PRODUCT_DATA.DataModel
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserTokens");
 
-      
+            // Cart entitet
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.UserId).IsRequired();
-                entity.Property(e => e.CartId).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.CartId).IsRequired().HasMaxLength(50); 
+                entity.HasOne<ApplicationUser>()
+                      .WithMany() 
+                      .HasForeignKey(e => e.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
-
+           
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.CartId).IsRequired();
                 entity.Property(e => e.ProductId).IsRequired();
                 entity.HasOne(e => e.Cart)
-                      .WithMany()
+                      .WithMany() 
                       .HasForeignKey(e => e.CartId)
                       .HasPrincipalKey(c => c.CartId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+             
+                entity.HasOne(e => e.Product)
+                      .WithMany() 
+                      .HasForeignKey(e => e.ProductId)
+                      .HasPrincipalKey(p => p.IdProduct)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -67,9 +79,9 @@ namespace PRODUCT_DATA.DataModel
                 entity.Property(e => e.Keywords).HasMaxLength(500);
             });
         }
+
+
     }
 
-   
-    
-   
-}
+
+    }

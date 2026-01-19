@@ -6,13 +6,11 @@ using PRODUCT_LOGIC.Automaper;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace PRODUCT_LOGIC.AutoMapper
 {
     public class RepositoryMappingService : IRepositoryMappingService
     {
         public Mapper mapper;
-
 
         public RepositoryMappingService()
         {
@@ -22,15 +20,14 @@ namespace PRODUCT_LOGIC.AutoMapper
                 cfg.CreateMap<Product, ProductDomain>();
                 cfg.CreateMap<ProductDomain, Product>();
 
-                // Cart
-                cfg.CreateMap<Cart, CartDomain>();
-                cfg.CreateMap<CartDomain, Cart>();
-
+             
                 // CartItem
                 cfg.CreateMap<CartItem, CartItemDomain>()
-                   .ForMember(dest => dest.Cart, opt => opt.Ignore()); 
+                   .ForMember(dest => dest.Cart, opt => opt.MapFrom(src => src.Cart)) // mapiraj Cart ako želiš
+                   .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product)); // mapiraj Product
                 cfg.CreateMap<CartItemDomain, CartItem>()
-                   .ForMember(dest => dest.Cart, opt => opt.Ignore());
+                   .ForMember(dest => dest.Cart, opt => opt.Ignore()) // EF će upravljati navigacijom
+                   .ForMember(dest => dest.Product, opt => opt.Ignore()); // EF će upravljati navigacijom
             });
 
             mapper = new Mapper(config);
