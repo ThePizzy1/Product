@@ -13,7 +13,15 @@ namespace PRODUCT_LOGIC_I
         // Products
         Task<IEnumerable<ProductDomain>> GetAllProductsAsync();
         Task<ProductDomain> GetProductAsync(string productId);
-        Task AddProductAsync(ProductDomain product);
+        public Task<ProductDomain> AddProductAsync(string idProduct,
+             string name,
+             string description,
+             decimal price,
+             decimal? weight,
+             byte[] image,
+             int? warrantyMonths,
+             DateTime? expirationDate,
+             string keywords);
 
         // Cart
         Task AddToCartAsync(string username, string productId);

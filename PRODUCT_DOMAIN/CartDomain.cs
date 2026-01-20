@@ -17,5 +17,6 @@ namespace PRODUCT_DOMAIN
         public string UserId { get; set; }  // korisnik FK
         public string CartId { get; set; }
         public List<CartItemDomain> Items { get; set; } = new List<CartItemDomain>();
+        public ProductDomain ProductD { get; set; }
     }
 }

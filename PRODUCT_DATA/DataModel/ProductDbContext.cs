@@ -75,7 +75,7 @@ namespace PRODUCT_DATA.DataModel
                 entity.Property(e => e.Description).HasMaxLength(1000);
                 entity.Property(e => e.Price).HasColumnType("decimal(20,2)");
                 entity.Property(e => e.Weight).HasColumnType("decimal(10,2)");
-                entity.Property(e => e.ImageUrl).HasMaxLength(500);
+                entity.Property(e => e.Image).HasMaxLength(500);
                 entity.Property(e => e.Keywords).HasMaxLength(500);
             });
         }

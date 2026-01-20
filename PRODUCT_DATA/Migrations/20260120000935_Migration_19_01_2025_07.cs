@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PRODUCT_DATA.Migrations
 {
-    public partial class Migration_19_01_2025_05 : Migration
+    public partial class Migration_19_01_2025_07 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace PRODUCT_DATA.Migrations
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
                     Weight = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    ImageUrl = table.Column<string>(maxLength: 500, nullable: true),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", maxLength: 500, nullable: true),
                     WarrantyMonths = table.Column<int>(nullable: true),
                     ExpirationDate = table.Column<DateTime>(nullable: true),
                     Keywords = table.Column<string>(maxLength: 500, nullable: true)

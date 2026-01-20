@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace PRODUCT_DOMAIN.DataModel
@@ -12,7 +13,9 @@ namespace PRODUCT_DOMAIN.DataModel
         public string Description { get; set; }
         public decimal Price { get; set; }
         public decimal? Weight { get; set; }
-        public string ImageUrl { get; set; }        
+
+        [Column(TypeName = "varbinary(max)")]//bitno za sliku u bazi da zna šta je točno
+        public byte[] Image { get; set; }        
         public int? WarrantyMonths { get; set; }    // zavisi o čemu se radi ali večina ima neku garanciju
         public DateTime? ExpirationDate { get; set; }   
         public string Keywords { get; set; }    //dobro bi došlo za neko filtriranje po ključnim riječima

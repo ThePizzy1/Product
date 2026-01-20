@@ -283,8 +283,8 @@ namespace PRODUCT_DATA.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(500)")
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)")
                         .HasMaxLength(500);
 
                     b.Property<string>("Keywords")

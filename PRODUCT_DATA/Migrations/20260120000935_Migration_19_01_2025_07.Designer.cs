@@ -10,8 +10,8 @@ using PRODUCT_DATA.DataModel;
 namespace PRODUCT_DATA.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20260119164713_Migration_19_01_2025_05")]
-    partial class Migration_19_01_2025_05
+    [Migration("20260120000935_Migration_19_01_2025_07")]
+    partial class Migration_19_01_2025_07
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -285,8 +285,8 @@ namespace PRODUCT_DATA.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(500)")
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)")
                         .HasMaxLength(500);
 
                     b.Property<string>("Keywords")

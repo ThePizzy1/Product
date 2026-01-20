@@ -17,7 +17,7 @@ namespace PRODUCT_DOMAIN
         public string CartId { get; set; }    // FK na Cart spaja se na onu šifru u cart
         public Cart Cart { get; set; }
         public Product Product { get; set; }
-
+        public ProductDomain ProductD { get; set; }
         public string ProductId { get; set; }  // šifra proizvoda FK na proizvod
     }
 }
