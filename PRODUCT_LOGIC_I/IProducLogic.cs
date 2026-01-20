@@ -29,8 +29,8 @@ namespace PRODUCT_LOGIC_I
              string keywords);
 
         // Cart
-        Task AddToCartAsync(string username, string productId);//prvo moraš ovo 
-        Task RemoveFromCartAsync(string username, string productId);// da bi mogla ovo
+        Task AddToCartAsync(string username, string productId, int numberOfItems);//prvo moraš ovo 
+        Task RemoveFromCartAsync(string username, string productId, int numberOfItems);// da bi mogla ovo
         Task<CartDomain> GetCartAsync(string username);//da vidiš ovo
     }
 }

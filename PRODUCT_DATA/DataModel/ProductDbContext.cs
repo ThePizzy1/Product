@@ -35,10 +35,14 @@ namespace PRODUCT_DATA.DataModel
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserTokens");
 
-            // Cart entitet
+            // Id nije radio zaboravila onaj dio da  mora to napravit itd
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasColumnType("uniqueidentifier")
+                    .HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.CartId).IsRequired().HasMaxLength(50); 
                 entity.HasOne<ApplicationUser>()
                       .WithMany() 
@@ -50,6 +54,10 @@ namespace PRODUCT_DATA.DataModel
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasColumnType("uniqueidentifier")
+                    .HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.CartId).IsRequired();
                 entity.Property(e => e.ProductId).IsRequired();
                 entity.HasOne(e => e.Cart)
@@ -70,6 +78,10 @@ namespace PRODUCT_DATA.DataModel
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasColumnType("uniqueidentifier")
+                    .HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.IdProduct).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
                 entity.Property(e => e.Description).HasMaxLength(1000);

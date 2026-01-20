@@ -86,8 +86,7 @@ namespace PRODUCT_LOGIC
 
         // --- CART FUNCTIONS ---
 
-        // --- CART FUNCTIONS ---
-        public async Task AddToCartAsync(string username, string productId)
+        public async Task AddToCartAsync(string username, string productId, int numberOfItems)
         {
             // 1. Dohvati ili stvori cart
             var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);
@@ -97,7 +96,8 @@ namespace PRODUCT_LOGIC
                 {
                     Id = Guid.NewGuid(),
                     UserId = username,
-                    CartId = Guid.NewGuid().ToString()
+                    CartId = await GenerateUniqueCartIdAsync()
+
                 };
                 _db.Carts.Add(cart);
                 await _db.SaveChangesAsync();
@@ -118,9 +118,42 @@ namespace PRODUCT_LOGIC
                 _db.CartItems.Add(cartItem);
                 await _db.SaveChangesAsync();
             }
+            if(exists)
+            {
+
+            }
+            else
+            {
+                throw new Exception($"Product mistake");
+            }
+        }
+        //generator za dodavanje novog cartId ako već ne postoji
+        private static string GenerateRandomCartId(int length = 8)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+
+            return new string(Enumerable.Range(0, length)
+                .Select(_ => chars[random.Next(chars.Length)])
+                .ToArray());
+        }
+        //neka provjeri dali taj id postoji ako da ponovi radnju dok ne bude jedinstven
+        private async Task<string> GenerateUniqueCartIdAsync()
+        {
+            string cartId;
+            bool exists;
+
+            do
+            {
+                cartId = GenerateRandomCartId(4); 
+                exists = await _db.Carts.AnyAsync(c => c.CartId == cartId);
+            }
+            while (exists);
+
+            return cartId;
         }
 
-        public async Task RemoveFromCartAsync(string username, string productId)
+        public async Task RemoveFromCartAsync(string username, string productId, int numberOfItems)
         {
             var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);
             if (cart == null) return; // nema carta → ništa za ukloniti
