@@ -32,13 +32,17 @@ namespace PRODUCT_WebApi_.Controller
             return Ok(products);
         }
 
-        [HttpGet("{productId}")]
-        public async Task<IActionResult> GetProduct(string productId)
+        [HttpGet]
+        [Route("singleItem/{id}")]
+        public async Task<IActionResult> GetProduct(string id)
         {
-            var product = await _logic.GetProductAsync(productId);
+            var product = await _logic.GetProductAsync(id);
             if (product == null) return NotFound();
             return Ok(product);
         }
+
+
+
 
         [HttpPost("addProduct")]
         public async Task<IActionResult> AddProductAsync(
@@ -78,7 +82,7 @@ namespace PRODUCT_WebApi_.Controller
         }
 
         //---Cart-----
-        [HttpPost("cart/{username}/add/{productId}")]
+        [HttpPost("cartAdd/")]
         public async Task<IActionResult> AddToCart(string username, string productId)
         {
             try
@@ -92,7 +96,7 @@ namespace PRODUCT_WebApi_.Controller
             }
         }
 
-        [HttpPost("cart/{username}/remove/{productId}")]
+        [HttpPost("cartRemove/")]
         public async Task<IActionResult> RemoveFromCart(string username, string productId)
         {
             try

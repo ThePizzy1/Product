@@ -11,8 +11,13 @@ namespace PRODUCT_LOGIC_I
   public  interface IProducLogic
     {
         // Products
+        //ofc radi
         Task<IEnumerable<ProductDomain>> GetAllProductsAsync();
+
+        //Radi dohavća pojedini item ali mi je vratilo cross policy jučer // radi zajebala si rutu
         Task<ProductDomain> GetProductAsync(string productId);
+
+        //Ovo radi ne dirj to
         public Task<ProductDomain> AddProductAsync(string idProduct,
              string name,
              string description,
@@ -24,8 +29,8 @@ namespace PRODUCT_LOGIC_I
              string keywords);
 
         // Cart
-        Task AddToCartAsync(string username, string productId);
-        Task RemoveFromCartAsync(string username, string productId);
-        Task<CartDomain> GetCartAsync(string username);
+        Task AddToCartAsync(string username, string productId);//prvo moraš ovo 
+        Task RemoveFromCartAsync(string username, string productId);// da bi mogla ovo
+        Task<CartDomain> GetCartAsync(string username);//da vidiš ovo
     }
 }

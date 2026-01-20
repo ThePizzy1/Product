@@ -137,10 +137,10 @@ namespace PRODUCT_LOGIC
 
         public async Task<CartDomain> GetCartAsync(string username)
         {
-            // 1. Dohvati cart po userId
-            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);
+         
+            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);//koristim username i on je jedinstven a ne da mi se za ovak malo dohvaćati hash
 
-            // Ako cart ne postoji, kreiraj novi
+        
             if (cart == null)
             {
                 cart = new Cart
@@ -153,13 +153,12 @@ namespace PRODUCT_LOGIC
                 await _db.SaveChangesAsync();
             }
 
-            // 2. Dohvati sve stavke za taj cart
+           
             var cartItems = await _db.CartItems
                 .Where(ci => ci.CartId == cart.CartId)
-                .Include(ci => ci.Product) // da dobijemo podatke o proizvodu
+                .Include(ci => ci.Product) 
                 .ToListAsync();
 
-            // 3. Mapiraj na domena objekte
             var cartDomain = new CartDomain
             {
                 Id = cart.Id,
