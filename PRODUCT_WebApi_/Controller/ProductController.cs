@@ -82,12 +82,16 @@ namespace PRODUCT_WebApi_.Controller
         }
 
         //---Cart-----
-        [HttpPost("cartAdd/")]
-        public async Task<IActionResult> AddToCart(string username, string productId)
+        
+        [HttpPost("cartAdd")]
+        public async Task<IActionResult> AddToCart(
+            [FromQuery] string username,
+            [FromQuery] string productId,
+            [FromQuery] int numberOfItems)
         {
             try
             {
-                await _logic.AddToCartAsync(username, productId);
+                await _logic.AddToCartAsync(username, productId, numberOfItems);
                 return Ok();
             }
             catch (Exception ex)
@@ -96,12 +100,13 @@ namespace PRODUCT_WebApi_.Controller
             }
         }
 
+
         [HttpPost("cartRemove/")]
-        public async Task<IActionResult> RemoveFromCart(string username, string productId)
+        public async Task<IActionResult> RemoveFromCart(string username, string productId, int numberOfItems)
         {
             try
             {
-                await _logic.RemoveFromCartAsync(username, productId);
+                await _logic.RemoveFromCartAsync(username, productId, numberOfItems);
                 return Ok();
             }
             catch (Exception ex)

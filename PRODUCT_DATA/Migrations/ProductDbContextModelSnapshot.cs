@@ -154,7 +154,8 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("CartId")
                         .IsRequired()
@@ -175,11 +176,16 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("CartId")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("NumberOfItems")
+                        .HasColumnType("int")
+                        .HasMaxLength(20);
 
                     b.Property<string>("ProductId")
                         .IsRequired()
@@ -269,7 +275,8 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(1000)")

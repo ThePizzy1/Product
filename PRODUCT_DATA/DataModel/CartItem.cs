@@ -12,5 +12,6 @@ namespace PRODUCT_DATA.DataModel
         public string ProductId { get; set; }  // šifra proizvoda FK na proizvod
         public Cart Cart { get; set; }
         public Product Product { get; set; }
+        public int NumberOfItems { get; set; }
     }
 }

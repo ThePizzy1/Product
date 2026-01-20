@@ -10,8 +10,8 @@ using PRODUCT_DATA.DataModel;
 namespace PRODUCT_DATA.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20260120000935_Migration_19_01_2025_07")]
-    partial class Migration_19_01_2025_07
+    [Migration("20260120114726_Migration_20_01_2026_11")]
+    partial class Migration_20_01_2026_11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,7 +156,8 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("CartId")
                         .IsRequired()
@@ -177,11 +178,16 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("CartId")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("NumberOfItems")
+                        .HasColumnType("int")
+                        .HasMaxLength(20);
 
                     b.Property<string>("ProductId")
                         .IsRequired()
@@ -271,7 +277,8 @@ namespace PRODUCT_DATA.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(1000)")

@@ -88,45 +88,52 @@ namespace PRODUCT_LOGIC
 
         public async Task AddToCartAsync(string username, string productId, int numberOfItems)
         {
-            // 1. Dohvati ili stvori cart
-            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);
+            if (numberOfItems <= 0)
+                throw new ArgumentException("Number of items must be greater than 0");
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+                throw new Exception($"User '{username}' not found in the database");
+            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == user.Id);
             if (cart == null)
             {
                 cart = new Cart
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = username,
+                    UserId = user.Id, 
                     CartId = await GenerateUniqueCartIdAsync()
-
                 };
+
                 _db.Carts.Add(cart);
                 await _db.SaveChangesAsync();
             }
 
-            // 2. Provjeri postoji li već item u cartu
-            var exists = await _db.CartItems
-                .AnyAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
+            var cartItem = await _db.CartItems
+                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
 
-            if (!exists)
+            if (cartItem != null)
             {
-                var cartItem = new CartItem
-                {
-                    Id = Guid.NewGuid(),
-                    CartId = cart.CartId,
-                    ProductId = productId
-                };
-                _db.CartItems.Add(cartItem);
-                await _db.SaveChangesAsync();
-            }
-            if(exists)
-            {
-
+     
+                cartItem.NumberOfItems += numberOfItems;
             }
             else
             {
-                throw new Exception($"Product mistake");
+                var productExists = await _db.Products.AnyAsync(p => p.IdProduct == productId);
+                if (!productExists)
+                    throw new Exception($"Product '{productId}' does not exist in the database");
+
+                cartItem = new CartItem
+                {
+                    CartId = cart.CartId,
+                    ProductId = productId,
+                    NumberOfItems = numberOfItems
+                };
+
+                _db.CartItems.Add(cartItem);
             }
+
+            await _db.SaveChangesAsync();
         }
+
+
         //generator za dodavanje novog cartId ako već ne postoji
         private static string GenerateRandomCartId(int length = 8)
         {

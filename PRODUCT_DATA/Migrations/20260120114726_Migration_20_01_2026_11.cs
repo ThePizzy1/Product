@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PRODUCT_DATA.Migrations
 {
-    public partial class Migration_19_01_2025_07 : Migration
+    public partial class Migration_20_01_2026_11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +52,7 @@ namespace PRODUCT_DATA.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     IdProduct = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
@@ -179,7 +179,7 @@ namespace PRODUCT_DATA.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     UserId = table.Column<string>(nullable: true),
                     CartId = table.Column<string>(maxLength: 50, nullable: false)
                 },
@@ -191,7 +191,7 @@ namespace PRODUCT_DATA.Migrations
                         name: "FK_Carts_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalColumn: "Id",//
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -199,9 +199,10 @@ namespace PRODUCT_DATA.Migrations
                 name: "CartItems",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     CartId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false)
+                    ProductId = table.Column<string>(nullable: false),
+                    NumberOfItems = table.Column<int>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {

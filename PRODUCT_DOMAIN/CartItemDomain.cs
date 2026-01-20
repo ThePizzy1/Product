@@ -8,10 +8,11 @@ namespace PRODUCT_DOMAIN
 {
    public class CartItemDomain
     {public CartItemDomain() { }
-        public CartItemDomain(string cartId, string productId)
+        public CartItemDomain(string cartId, string productId, int number)
         {
             cartId = CartId;
             productId = ProductId;
+            number = NumberOfItems;
         }
         public Guid Id { get; set; }        // hash, generira sam 
         public string CartId { get; set; }    // FK na Cart spaja se na onu šifru u cart
@@ -19,5 +20,6 @@ namespace PRODUCT_DOMAIN
         public Product Product { get; set; }
         public ProductDomain ProductD { get; set; }
         public string ProductId { get; set; }  // šifra proizvoda FK na proizvod
+        public int NumberOfItems { get; set; }
     }
 }

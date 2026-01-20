@@ -48,6 +48,7 @@ namespace PRODUCT_DATA.DataModel
                       .WithMany() 
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+              
             });
 
            
@@ -65,8 +66,8 @@ namespace PRODUCT_DATA.DataModel
                       .HasForeignKey(e => e.CartId)
                       .HasPrincipalKey(c => c.CartId)
                       .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.NumberOfItems).IsRequired().HasMaxLength(20);
 
-             
                 entity.HasOne(e => e.Product)
                       .WithMany() 
                       .HasForeignKey(e => e.ProductId)
