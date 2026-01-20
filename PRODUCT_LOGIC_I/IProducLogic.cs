@@ -30,7 +30,8 @@ namespace PRODUCT_LOGIC_I
 
         // Cart
         Task AddToCartAsync(string username, string productId, int numberOfItems);//prvo moraš ovo 
-        Task RemoveFromCartAsync(string username, string productId, int numberOfItems);// da bi mogla ovo
+        Task RemoveFromCartAsync(string username, string productId);// da bi mogla ovo
+        Task RemoveFromCartAsyncDecrement(string username, string productId);//u slučaju da mičeš jedanod npr 10 itema
         Task<CartDomain> GetCartAsync(string username);//da vidiš ovo
     }
 }

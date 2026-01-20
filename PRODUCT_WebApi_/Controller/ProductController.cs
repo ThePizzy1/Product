@@ -82,7 +82,10 @@ namespace PRODUCT_WebApi_.Controller
         }
 
         //---Cart-----
-        
+        //on kao šalje username, njega je lako dobit u frontu, sam iz tokena se poviuče
+        //username je isto tako jedinstven tak da se ne moram bojat da će slučajno biti dva ista 
+        //u drugom dijelu pronađe osobu sa tim username i onda uzme njen id, onaj dugačak hash
+        //i u tokenu su i usernam i id, tak da je svejedno 
         [HttpPost("cartAdd")]
         public async Task<IActionResult> AddToCart(
             [FromQuery] string username,
@@ -101,21 +104,40 @@ namespace PRODUCT_WebApi_.Controller
         }
 
 
-        [HttpPost("cartRemove/")]
-        public async Task<IActionResult> RemoveFromCart(string username, string productId, int numberOfItems)
+        [HttpPost("removeItem")]
+        public async Task<IActionResult> RemoveItem([FromQuery] string username, [FromQuery] string productId)
         {
             try
             {
-                await _logic.RemoveFromCartAsync(username, productId, numberOfItems);
-                return Ok();
+                await _logic.RemoveFromCartAsync(username, productId);
+                return Ok(new { message = "Item removed from cart" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Failed to remove from cart: {ex.Message}");
+                return StatusCode(500, $"Failed to remove item: {ex.Message}");
             }
         }
 
-        [HttpGet("{username}")]
+      
+        [HttpPost("decrementItem")]
+        public async Task<IActionResult> DecrementItem(
+            [FromQuery] string username,
+            [FromQuery] string productId
+             )
+        {
+            try
+            {
+                await _logic.RemoveFromCartAsyncDecrement(username, productId);
+                return Ok(new { message = $"Item quantity decreased by 1" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Failed to decrement item: {ex.Message}");
+            }
+        }
+    
+
+    [HttpGet("{username}")]
         public async Task<IActionResult> GetCart(string username)
         {
             try

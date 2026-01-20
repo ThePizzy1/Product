@@ -38,13 +38,14 @@ namespace PRODUCT_DATA.DataModel
             // Id nije radio zaboravila onaj dio da  mora to napravit itd
             modelBuilder.Entity<Cart>(entity =>
             {
-                entity.HasKey(e => e.Id);
+                entity.HasKey(e => e.Id);//ovo je key od carta koji se nigdje ne koristi ali omogući da je taaj catrt specifičan
                 entity.Property(e => e.Id)
                     .IsRequired()
                     .HasColumnType("uniqueidentifier")
                     .HasDefaultValueSql("NEWID()");
-                entity.Property(e => e.CartId).IsRequired().HasMaxLength(50); 
-                entity.HasOne<ApplicationUser>()
+
+                entity.Property(e => e.CartId).IsRequired().HasMaxLength(50); //ovaj dodaje aplikacija i koristi se za povezivanje u druge tablice
+                entity.HasOne<ApplicationUser>()// ovaj se povezao sa PK iz asp tablica zato što nisam rekla da se poveže na username, ali je tako i bolje ispalo
                       .WithMany() 
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);

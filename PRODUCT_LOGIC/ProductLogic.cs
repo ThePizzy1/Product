@@ -160,43 +160,30 @@ namespace PRODUCT_LOGIC
             return cartId;
         }
 
-        public async Task RemoveFromCartAsync(string username, string productId, int numberOfItems)
-        {
-            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);
-            if (cart == null) return; // nema carta → ništa za ukloniti
-
-            var cartItem = await _db.CartItems
-                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
-
-            if (cartItem != null)
-            {
-                _db.CartItems.Remove(cartItem);
-                await _db.SaveChangesAsync();
-            }
-        }
+        
 
         public async Task<CartDomain> GetCartAsync(string username)
         {
-         
-            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == username);//koristim username i on je jedinstven a ne da mi se za ovak malo dohvaćati hash
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+                throw new Exception($"User '{username}' not found");
 
-        
+            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == user.Id);
             if (cart == null)
             {
                 cart = new Cart
                 {
                     Id = Guid.NewGuid(),
-                    UserId = username,
+                    UserId = user.Id, 
                     CartId = Guid.NewGuid().ToString()
                 };
                 _db.Carts.Add(cart);
                 await _db.SaveChangesAsync();
             }
 
-           
             var cartItems = await _db.CartItems
                 .Where(ci => ci.CartId == cart.CartId)
-                .Include(ci => ci.Product) 
+                .Include(ci => ci.Product)
                 .ToListAsync();
 
             var cartDomain = new CartDomain
@@ -209,6 +196,7 @@ namespace PRODUCT_LOGIC
                     Id = ci.Id,
                     CartId = ci.CartId,
                     ProductId = ci.ProductId,
+                    NumberOfItems = ci.NumberOfItems,
                     ProductD = new ProductDomain(
                         ci.Product.IdProduct,
                         ci.Product.Name,
@@ -226,6 +214,50 @@ namespace PRODUCT_LOGIC
             return cartDomain;
         }
 
+        // Briše cijeli item iz cart-a
+        public async Task RemoveFromCartAsync(string username, string productId)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null) return; 
+            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == user.Id);
+            if (cart == null) return;
+            var cartItem = await _db.CartItems
+                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
+
+            if (cartItem != null)
+            {
+                _db.CartItems.Remove(cartItem);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        // Smanjuje broj itema za 1 i briše item ako padne na ≤ 0
+        public async Task RemoveFromCartAsyncDecrement(string username, string productId)
+        {
+           int  decrement = 1;
+            if (decrement <= 0) return;
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null) return;
+
+            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.UserId == user.Id);
+            if (cart == null) return;
+
+          
+            var cartItem = await _db.CartItems
+                .FirstOrDefaultAsync(ci => ci.CartId == cart.CartId && ci.ProductId == productId);
+
+            if (cartItem != null)
+            {
+                cartItem.NumberOfItems -= decrement;
+
+                if (cartItem.NumberOfItems <= 0)
+                {
+                    _db.CartItems.Remove(cartItem);
+                }
+
+                await _db.SaveChangesAsync();
+            }
+        }
 
     }
 }
